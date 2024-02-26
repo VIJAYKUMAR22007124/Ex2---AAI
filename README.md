@@ -23,13 +23,11 @@ from pgmpy.models import BayesianNetwork
 from pgmpy.factors.discrete import TabularCPD
 from pgmpy.inference import VariableElimination
 
-# Define the network structure
 network = BayesianNetwork([('Burglary', 'Alarm'),
                            ('Earthquake', 'Alarm'),
                            ('Alarm', 'JohnCalls'),
                            ('Alarm', 'MaryCalls')])
 
-# Define the Conditional Probability Distributions (CPDs)
 cpd_burglary = TabularCPD(variable='Burglary', variable_card=2, values=[[0.999], [0.001]])
 cpd_earthquake = TabularCPD(variable='Earthquake', variable_card=2, values=[[0.998], [0.002]])
 cpd_alarm = TabularCPD(variable='Alarm', variable_card=2,
@@ -48,13 +46,10 @@ cpd_mary_calls = TabularCPD(variable='MaryCalls', variable_card=2,
                              evidence=['Alarm'],
                              evidence_card=[2])
 
-# Add CPDs to the network
 network.add_cpds(cpd_burglary, cpd_earthquake, cpd_alarm, cpd_john_calls, cpd_mary_calls)
 
-# Initialize the inference engine
 inference = VariableElimination(network)
 
-# Perform exact inference
 evidence = {'JohnCalls': 1, 'MaryCalls': 0}  # John called (1) and Mary didn't call (0) as evidence
 query_variable = 'Burglary'
 
